@@ -26,7 +26,27 @@ const scene = new THREE.Scene()
 /**
  * BOX
  */
-const material = new THREE.MeshStandardMaterial({ color: 0xffffff })
+const material = new THREE.RawShaderMaterial({
+	vertexShader: /* glsl */ `
+	uniform mat4 projectionMatrix;
+	uniform mat4 modelMatrix;
+	uniform mat4 viewMatrix;
+
+	attribute vec3 position;
+
+	void main() {
+		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+
+	}
+	`,
+	fragmentShader: /* glsl */`
+		precision mediump float;
+	 
+		void main() {
+			gl_FragColor = vec4(0.0,0.0,1.0,1.0);
+		}
+	`,
+})
 const geometry = new THREE.PlaneGeometry(1, 1, 1, 10, 10, 10)
 const plane = new THREE.Mesh(geometry, material)
 scene.add(plane)
