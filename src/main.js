@@ -2,6 +2,9 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Pane } from 'tweakpane'
+import fragmentShader from './shader/basic/fragment.glsl'
+import vertexShader from './shader/basic/vertex.glsl'
+
 
 /**
  * Debug
@@ -27,25 +30,8 @@ const scene = new THREE.Scene()
  * BOX
  */
 const material = new THREE.RawShaderMaterial({
-	vertexShader: /* glsl */ `
-	uniform mat4 projectionMatrix;
-	uniform mat4 modelMatrix;
-	uniform mat4 viewMatrix;
-
-	attribute vec3 position;
-
-	void main() {
-		gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-
-	}
-	`,
-	fragmentShader: /* glsl */`
-		precision mediump float;
-	 
-		void main() {
-			gl_FragColor = vec4(0.0,0.0,1.0,1.0);
-		}
-	`,
+	vertexShader,
+	fragmentShader,
 })
 const geometry = new THREE.PlaneGeometry(1, 1, 1, 10, 10, 10)
 const plane = new THREE.Mesh(geometry, material)
